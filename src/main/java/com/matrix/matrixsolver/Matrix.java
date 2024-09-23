@@ -1,17 +1,27 @@
+package com.matrix.matrixsolver;
+
 import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Matrix {
 
-    private double[][] matrix;
-    
+    private final double[][] matrix;
+
     public Matrix(String path) {
-        File file = new File("src/matrix.txt");
-        createMatrix(file);
+        File file = new File(path);
+        this.matrix = createMatrix(file);
     }
 
-    private void createMatrix(File file) {
+    public Matrix(double[][] matrix) {
+        this.matrix = matrix;
+    }
+
+    public double[][] getMatrix() {
+        return this.matrix;
+    }
+
+    private double[][] createMatrix(File file) {
         try {
             Scanner scanner = new Scanner(file);
             List<double[]> tempMatrix = new ArrayList<>();
@@ -19,21 +29,20 @@ public class Matrix {
             while (scanner.hasNextLine()) {
                 String[] line = scanner.nextLine().trim().split("\\s+");
                 double[] row = new double[line.length];
-                
+
                 for (int i = 0; i < row.length; i++) {
                     row[i] = Double.parseDouble(line[i]);
                 }
 
                 tempMatrix.add(row);
-            } 
-            
+            }
+
             scanner.close();
 
             int rows = tempMatrix.size();
             int cols = tempMatrix.get(0).length;
 
-            matrix = new double[rows][cols];
-            
+            double[][] matrix = new double[rows][cols];
 
             for (int i = 0; i < rows; i++) {
                 double[] currentRow = tempMatrix.get(i);
@@ -41,13 +50,14 @@ public class Matrix {
                     matrix[i][j] = currentRow[j];
                 }
             }
-            
+            return matrix;
         } catch (FileNotFoundException e) {
             System.out.println("File not found!");
+            return null;
         }
-    }    
-    
-    private void swap(int i, int j) {
+    }
+
+    private void swap(double[][] matrix, int i, int j) {
         double[] temp = matrix[i];
         matrix[i] = matrix[j];
         matrix[j] = temp;
@@ -61,35 +71,40 @@ public class Matrix {
 
         return row2;
     }
-    
-    private void toRowEchelonForm() {
-        for (int i = 0; i < matrix.length; i++) {
-            if (matrix[i][i] == 0) {
-                for (int j = i + 1; j < matrix.length; j++) {
-                    if (matrix[j][i] != 0) {
-                        swap(i, j);
+
+    public double[][] getRowEchelonForm() {
+        double[][] rowEchelonForm = new double[this.matrix.length][];
+        for (int i = 0; i < this.matrix.length; i++) {
+            rowEchelonForm[i] = Arrays.copyOf(this.matrix[i], this.matrix[i].length);
+        }
+
+        for (int i = 0; i < rowEchelonForm.length; i++) {
+            if (rowEchelonForm[i][i] == 0) {
+                for (int j = i + 1; j < rowEchelonForm.length; j++) {
+                    if (rowEchelonForm[j][i] != 0) {
+                        swap(rowEchelonForm, i, j);
                         break;
                     }
                 }
             }
-            
-            if (matrix[i][i] == 0) {
+
+            if (rowEchelonForm[i][i] == 0) {
                 continue;
             }
-            
-            for (int j = i + 1; j < matrix.length; j++) {
-                if (matrix[j][i] != 0) {
-                    double scalar = -matrix[j][i] / matrix[i][i];
-                    matrix[j] = addMultipleOfRow(matrix[i], matrix[j], scalar);
+
+            for (int j = i + 1; j < rowEchelonForm.length; j++) {
+                if (rowEchelonForm[j][i] != 0) {
+                    double scalar = -rowEchelonForm[j][i] / rowEchelonForm[i][i];
+                    rowEchelonForm[j] = addMultipleOfRow(rowEchelonForm[i], rowEchelonForm[j], scalar);
                 }
             }
-            
         }
 
-        moveZeros();    
+        moveZeros(rowEchelonForm);
+        return rowEchelonForm;
     }
 
-    private void moveZeros() {
+    private void moveZeros(double[][] matrix) {
         int swapRow = matrix.length - 1;
         for (int i = matrix.length - 1; i >= 0; i--) {
             boolean allZero = true;
@@ -108,42 +123,43 @@ public class Matrix {
         }
     }
 
-    private void toReducedRowEchelonForm() {
-        toRowEchelonForm();
+    public double[][] getReducedRowEchelonForm() {
+        double[][] rowEchelonForm = getRowEchelonForm();
 
-        for (int i = 0; i < matrix.length; i++) {
+        for (int i = 0; i < rowEchelonForm.length; i++) {
             int pivot = 0;
-            while (pivot < matrix[i].length && matrix[i][pivot] == 0) {
+            while (pivot < rowEchelonForm[i].length && rowEchelonForm[i][pivot] == 0) {
                 pivot++;
             }
-        
-            if (pivot < matrix[i].length) {
-                double pivotValue = matrix[i][pivot];
-                for (int j = 0; j < matrix[i].length; j++) {
-                    matrix[i][j] /= pivotValue;
+
+            if (pivot < rowEchelonForm[i].length) {
+                double pivotValue = rowEchelonForm[i][pivot];
+                for (int j = 0; j < rowEchelonForm[i].length; j++) {
+                    rowEchelonForm[i][j] /= pivotValue;
                 }
-        
+
                 for (int j = 0; j < i; j++) {
-                    if (matrix[j][pivot] != 0) {
-                        double scalar = - matrix[j][pivot];
-                        matrix[j] = addMultipleOfRow(matrix[i], matrix[j], scalar);
+                    if (rowEchelonForm[j][pivot] != 0) {
+                        double scalar = -rowEchelonForm[j][pivot];
+                        rowEchelonForm[j] = addMultipleOfRow(rowEchelonForm[i], rowEchelonForm[j], scalar);
                     }
                 }
             }
         }
-        
 
+        return rowEchelonForm;
     }
 
-    private List<List<Double>> getGeneralSolution() {
+    public List<List<Double>> getGeneralSolution() {
+        double[][] reducedRowEchelonForm = this.getReducedRowEchelonForm();
         boolean[] variables = new boolean[matrix[0].length - 1];
-        
-        for (int i = 0; i < matrix.length; i++) {
+
+        for (int i = 0; i < reducedRowEchelonForm.length; i++) {
             int pivot = 0;
-            while (pivot < matrix[i].length - 1 && matrix[i][pivot] == 0) {
+            while (pivot < reducedRowEchelonForm[i].length - 1 && reducedRowEchelonForm[i][pivot] == 0) {
                 pivot++;
             }
-            if (pivot < matrix[i].length - 1) {
+            if (pivot < reducedRowEchelonForm[i].length - 1) {
                 variables[pivot] = true;
             }
         }
@@ -151,7 +167,7 @@ public class Matrix {
         List<Double> starterVector = new ArrayList<>();
         for (int i = 0; i < variables.length; i++) {
             if (variables[i]) {
-                starterVector.add(matrix[i][matrix[0].length - 1]);
+                starterVector.add(reducedRowEchelonForm[i][reducedRowEchelonForm[0].length - 1]);
             } else {
                 starterVector.add(0.0);
             }
@@ -166,7 +182,7 @@ public class Matrix {
                 List<Double> vector = new ArrayList<>();
                 for (int j = 0; j < variables.length; j++) {
                     if (variables[j]) {
-                        vector.add(-matrix[pivotRow][i]);
+                        vector.add(-reducedRowEchelonForm[pivotRow][i]);
                         pivotRow++;
                     } else if (i == j) {
                         vector.add(1.0);
@@ -177,12 +193,11 @@ public class Matrix {
                 vectors.add(vector);
             }
         }
-        
+
         return vectors;
+    }
 
-    }       
-
-    public void printMatrix(){
+    public static void printMatrix(double[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
             System.out.print("[");
             for (int j = 0; j < matrix[0].length; j++) {
@@ -200,19 +215,8 @@ public class Matrix {
         }
     }
 
-    public void printRowEchelonForm() {
-        toRowEchelonForm();
-        printMatrix();
-    }
-
-    public void printReducedRowEchelonForm() {
-        toReducedRowEchelonForm();
-        printMatrix();
-    }
-
-    public void printGeneralSolution() {
-        List<List<Double>> vectors = getGeneralSolution();
-        List <Double> firstVector = vectors.get(0);
+    public boolean isGeneralSolutionValid(List<List<Double>> vectors) {
+        List<Double> firstVector = vectors.get(0);
         boolean noSolution = true;
 
         for (double d : firstVector) {
@@ -222,10 +226,16 @@ public class Matrix {
             }
         }
 
-        if (noSolution) {
+        return !noSolution;
+    }
+
+    public void printGeneralSolution() {
+        List<List<Double>> vectors = getGeneralSolution();
+
+        if (!isGeneralSolutionValid(vectors)) {
             System.out.println("NO SOLUTION");
             return;
-        } 
+        }
 
         for (int i = 0; i < vectors.size(); i++) {
             List<Double> vector = vectors.get(i);
@@ -243,20 +253,54 @@ public class Matrix {
         }
         System.out.println();
     }
+
+    public String buildGeneralSolution() {
+        List<List<Double>> vectors = getGeneralSolution();
+        StringBuilder sb = new StringBuilder();
     
-    public static void main(String[] args) {
-        Matrix matrix = new Matrix("src/matrix.txt");
-        System.out.println("Original matrix:");
-        matrix.printMatrix();
-        System.out.println();
-        System.out.println("Row echelon form:");
-        matrix.printRowEchelonForm();
-        System.out.println();
-        System.out.println("Reduced row echelon form:");
-        matrix.printReducedRowEchelonForm();
-        System.out.println();
-        System.out.println("General solution:");
-        matrix.printGeneralSolution();
+        if (!isGeneralSolutionValid(vectors)) {
+            return "NO SOLUTION";
+        }
+    
+        for (int i = 0; i < vectors.size(); i++) {
+            List<Double> vector = vectors.get(i);
+    
+            if (i != 0) {
+                sb.append(" + s_").append(i);
+            }
+            sb.append("<");
+    
+            for (int j = 0; j < vector.size(); j++) {
+                sb.append(vector.get(j));
+                if (j < vector.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+            sb.append(">");
+        }
+        return sb.toString();
     }
-    
-}   
+
+    public static void main(String[] args) {
+        Matrix matrix = new Matrix("src/main/java/com/matrix/matrixsolver/matrix.txt");
+        if (matrix.getMatrix() != null) {
+            System.out.println("Original matrix:");
+            printMatrix(matrix.getMatrix());
+            System.out.println();
+
+            System.out.println("Row echelon form:");
+            printMatrix(matrix.getRowEchelonForm());
+            System.out.println();
+
+            System.out.println("Reduced row echelon form:");
+            printMatrix(matrix.getReducedRowEchelonForm());
+            System.out.println();
+
+            System.out.println("General solution:");
+            matrix.printGeneralSolution();
+        } else {
+            System.out.println("Failed to initialize the matrix. Please check the file path and content.");
+        }
+    }
+
+}

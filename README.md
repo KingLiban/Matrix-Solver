@@ -1,1 +1,0 @@
-## REF, RREF, General Solution, and an Odd Magic Square

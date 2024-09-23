@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --rose-50: #fff1f2;
+  --rose-100: #ffe4e6;
+  --rose-200: #fecdd3;
+  --rose-300: #fda4af;
+  --rose-400: #fb7185;
+  --rose-500: #f43f5e;
+  --rose-600: #e11d48;
+  --rose-700: #be123c;
+  --rose-800: #9f1239;
+  --rose-900: #881337;
+  --rose-950: #4c0519;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--rose-50);
+    color: var(--rose-900);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    line-height: 1.6;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+header img {
+    width: 3.5rem;
+}
+
+h1 {
+    color: var(--rose-700);
+    text-align: center;
+    font-size: 2.75rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.matrix-config {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: var(--rose-100);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+label {
+    font-weight: 600;
+    margin-right: 10px;
+    color: var(--rose-800);
+}
+
+input[type="number"] {
+    width: 100px;
+    margin: 5px;
+    padding: 10px;
+    border: 2px solid var(--rose-300);
+    border-radius: 4px;
+    background-color: #fff;
+    color: var(--rose-900);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--rose-500);
+    box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2);
+}
+
+.matrix-input {
+    display: grid;
+    gap: 4px;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: var(--rose-200);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.matrix-input input {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--rose-400);
+    background-color: #fff;
+    color: var(--rose-950);
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.matrix-input input:focus {
+    outline: none;
+    border-color: var(--rose-600);
+    box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.2);
+}
+
+button {
+    margin: 10px 0;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--rose-500);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: var(--rose-600);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#solution {
+    margin-top: 20px;
+    border: 1px solid var(--rose-300);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.create-options {
+    align-self: center;
+    display: flex;
+    gap: 1rem;
+}
+
+#solve-matrix {
+    display: inline-block;
+    align-self: center;
+    width: 180px;
+    height: 50px;
+}
+
+#solution .general-solution {
+    background-color: var(--rose-100);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#solution .general-solution h3 {
+    color: var(--rose-700);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+#solution .general-solution p {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.solution-matrix {
+    display: inline-grid;
+    gap: 2px;
+    background-color: var(--rose-300);
+    padding: 2px;
+    border: 1px solid var(--rose-300);
+    border-radius: 4px;
+}
+
+.solution-matrix-cell {
+    background-color: var(--rose-50);
+    padding: 0.75rem;
+    text-align: center;
+    min-width: 3rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+    
+    input[type="number"], button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .matrix-config {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .create-options {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #solve-matrix {
+        width: 100%;
+    }
+}

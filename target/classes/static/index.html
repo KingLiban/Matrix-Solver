@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matrix Solver</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="reset.css" />
+    <script src="script.js" defer></script>
+    <link
+      rel="icon"
+      href="./assets/confounded-square.svg"
+      type="image/svg+xml"
+    />
+  </head>
+  <body>
+    <header>
+      <span>
+        <img src="./assets/confounded-square.svg" alt="hero" />
+      </span>
+      <h1>Matrix Solver</h1>
+    </header>
+    <div class="body">
+      <div class="matrix-config">
+        <div class="rows">
+          <label for="rows">Rows:</label>
+          <input type="number" id="rows" min="1" value="3" />
+        </div>
+        <div class="cols">
+          <label for="cols">Columns:</label>
+          <input type="number" id="cols" min="1" value="3" />
+        </div>
+      </div>
+      <div class="create-options">
+        <button id="create-matrix">Create Matrix</button>
+        <button id="upload-matrix">Upload Matrix</button>
+      </div>
+      <div id="matrix-container"></div>
+      <button id="solve-matrix">Solve Matrix</button>
+      <div id="solution"></div>
+    </div>
+  </body>
+</html>
