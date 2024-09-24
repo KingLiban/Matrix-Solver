@@ -1,5 +1,5 @@
 # Matrix Solver
-![alt text](image-1.png)
+![alt text](./readme_images/image-1.png)
 ## Overview
 The Matrix Solver is a Spring Boot application that allows users to perform various matrix operations, including creating matrices from files, converting them to row echelon form, reduced row echelon form, and finding general solutions to linear equations.
 
@@ -44,13 +44,13 @@ You can try the live version of the Matrix Solver at the following link: [Matrix
 - **Solve Matrix**: Click the button to compute the row echelon form, reduced row echelon form, and general solution.
 
 ### Step 1: Upload .txt file
-![alt text](image.png)
+![alt text](./readme_images/image.png)
 
 ### Step 2: View created matrix
-![alt text](image-2.png)
+![alt text](./readme_images/image-2.png)
 
 ### Step 3: Submit and see answer
-![alt text](image-3.png)
+![alt text](./readme_images/image-3.png)
 ## Development
 - The main Java classes are located in `src/main/java/com/matrix/matrixsolver/`
 - HTML/CSS/JS files are typically located in `src/main/resources/static/`
