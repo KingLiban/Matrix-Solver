@@ -130,23 +130,30 @@ const domHandler = (function () {
     generalSolution.innerHTML = "<h3>General Solution:</h3>";
 
     if (data.generalSolution === "NO SOLUTION") {
-        generalSolution.innerHTML += "<p>NO SOLUTION</p>";
+      generalSolution.innerHTML += "<p>NO SOLUTION</p>";
     } else {
-        const solution = data.generalSolution;
-        const [constantPart, variablePart] = solution.split(' + s_1');
-        const constant = constantPart.slice(1, -1).split(', ').map(Number);
-        const variable = variablePart.slice(1, -1).split(', ').map(Number);
+      const solution = data.generalSolution;
+      const parts = solution.split(" + s_1");
+      const constantPart = parts[0];
+      const variablePart = parts.length > 1 ? parts[1] : null;
 
-        let solutionHTML = "<p>";
-        for (let i = 0; i < constant.length; i++) {
-            solutionHTML += `x<sub>${i + 1}</sub> = ${constant[i].toFixed(4)}`;
-            if (variable[i] !== 0) {
-                solutionHTML += ` ${variable[i] >= 0 ? "+" : "-"} ${Math.abs(variable[i]).toFixed(4)}s<sub>1</sub>`;
-            }
-            solutionHTML += "<br>";
+      const constant = constantPart.slice(1, -1).split(", ").map(Number);
+      const variable = variablePart
+        ? variablePart.slice(1, -1).split(", ").map(Number)
+        : null;
+
+      let solutionHTML = "<p>";
+      for (let i = 0; i < constant.length; i++) {
+        solutionHTML += `x<sub>${i + 1}</sub> = ${constant[i].toFixed(4)}`;
+        if (variable && variable[i] !== 0) {
+          solutionHTML += ` ${variable[i] >= 0 ? "+" : "-"} ${Math.abs(
+            variable[i]
+          ).toFixed(4)}s<sub>1</sub>`;
         }
-        solutionHTML += "</p>";
-        generalSolution.innerHTML += solutionHTML;
+        solutionHTML += "<br>";
+      }
+      solutionHTML += "</p>";
+      generalSolution.innerHTML += solutionHTML;
     }
     solutionDiv.appendChild(generalSolution);
 
@@ -159,7 +166,7 @@ const domHandler = (function () {
     reducedRowEchelonForm.innerHTML = "<h3>Reduced Row Echelon Form:</h3>";
     solutionDiv.appendChild(reducedRowEchelonForm);
     displayMatrix(data.reducedRowEchelonForm, reducedRowEchelonForm);
-}
+  }
 
   return {
     createMatrix,

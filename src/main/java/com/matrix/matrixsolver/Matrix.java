@@ -132,10 +132,14 @@ public class Matrix {
                 pivot++;
             }
 
-            if (pivot < rowEchelonForm[i].length) {
+            if (pivot < rowEchelonForm[i].length && rowEchelonForm[i][pivot] != 0) {
                 double pivotValue = rowEchelonForm[i][pivot];
                 for (int j = 0; j < rowEchelonForm[i].length; j++) {
                     rowEchelonForm[i][j] /= pivotValue;
+                    // Floating error fix
+                    if (rowEchelonForm[i][j] == -0.0) {
+                        rowEchelonForm[i][j] = 0.0;
+                    }
                 }
 
                 for (int j = 0; j < i; j++) {

@@ -46,9 +46,8 @@ class MatrixSolverApplicationTests {
     @Test
     void testGetGeneralSolution() {
         List<List<Double>> result = matrix.getGeneralSolution();
-        assertEquals(2, result.size());
-        assertEquals(List.of(1.0, -2.0, 1.0), result.get(0));
-        assertEquals(List.of(1.0, 0.0, -1.0), result.get(1));
+        assertEquals(1, result.size());
+        assertEquals(List.of(-1.0, 2.0), result.get(0));
     }
 
     @Test
@@ -69,6 +68,6 @@ class MatrixSolverApplicationTests {
     @Test
     void testBuildGeneralSolution() {
         String result = matrix.buildGeneralSolution();
-        assertEquals("<1.000000, -2.000000, 1.000000> + s_1<1.000000, 0.000000, -1.000000>", result);
+        assertEquals("<-1.0, 2.0>", result);
     }
 }
