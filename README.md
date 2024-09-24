@@ -20,7 +20,7 @@ You can try the live version of the Matrix Solver at the following link: [Matrix
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/KingLiban/Matrix-Solver.git
    cd matrix-solver
    ```
 
